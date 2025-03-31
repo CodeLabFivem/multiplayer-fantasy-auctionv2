@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiplayer Fantasy Auction</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Multiplayer Fantasy Auction</h1>
+        </div>
+    </header>
+    
+    <div class="container">
+        <!-- Login View (initial view) -->
+        <div id="login-view">
+            <div class="login-container card">
+                <h2>Join Auction</h2>
+                <div class="login-form">
+                    <div class="form-group">
+                        <label for="username">Team Name</label>
+                        <input type="text" id="username" placeholder="Enter your team name">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" placeholder="Enter password">
+                    </div>
+                    <button class="btn" id="login-btn">Join Auction</button>
+                </div>
+                <p style="text-align: center; margin-top: 1rem;">New team? <a href="#" id="show-register">Register here</a></p>
+            </div>
+        </div>
+        
+        <!-- Register View (initially hidden) -->
+        <div id="register-view" style="display: none;">
+            <div class="login-container card">
+                <h2>Register New Team</h2>
+                <div class="register-form">
+                    <div class="form-group">
+                        <label for="new-username">Team Name</label>
+                        <input type="text" id="new-username" placeholder="Choose a team name">
+                    </div>
+                    <div class="form-group">
+                        <label for="new-password">Password</label>
+                        <input type="password" id="new-password" placeholder="Choose a password">
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm-password">Confirm Password</label>
+                        <input type="password" id="confirm-password" placeholder="Confirm your password">
+                    </div>
+                    <div class="form-group">
+                        <label for="starting-purse">Starting Purse</label>
+                        <input type="number" id="starting-purse" placeholder="Enter starting purse" value="1000000000">
+                    </div>
+                    <div class="form-group admin-checkbox">
+                        <label>
+                            <input type="checkbox" id="admin-checkbox"> Register as Admin (Auction Creator)
+                        </label>
+                    </div>
+                    <div class="form-group" id="admin-code-group" style="display: none;">
+                        <label for="admin-code">Admin Access Code</label>
+                        <input type="password" id="admin-code" placeholder="Enter admin access code">
+                        <small>Contact system administrator for the access code</small>
+                    </div>
+                    <button class="btn" id="register-btn">Register Team</button>
+                </div>
+                <p style="text-align: center; margin-top: 1rem;">Already registered? <a href="#" id="show-login">Login here</a></p>
+            </div>
+        </div>
+        
+        <!-- Main Auction View (after login) -->
+        <div id="auction-view" style="display: none;">
+            <div class="auction-status">
+                <div>
+                    <strong>Auction Status:</strong> <span id="auction-state">Active</span>
+                </div>
+                <div>
+                    <strong>Your Team:</strong> <span id="user-team">Team Name</span>
+                </div>
+                <div>
+                    <strong>Your Purse:</strong> <span id="user-purse">₹10,00,00,000</span>
+                </div>
+            </div>
+            
+            <div class="auction-area">
+                <div class="main-auction">
+                    <div class="card">
+                        <h2>Current Player</h2>
+                        <div id="current-player-display">
+                            <!-- Dynamically populated by script.js -->
+                        </div>
+                        <div class="auction-timer">
+                            <strong>Time Left:</strong> <span id="timer">00:30</span>
+                        </div>
+                        <div class="current-bid">
+                            <h4>Current Highest Bid</h4>
+                            <div style="display: flex; justify-content: space-between;">
+                                <div><strong>Team:</strong> <span id="highest-bidder">Waiting for bids</span></div>
+                                <div><strong>Amount:</strong> <span id="highest-bid">₹3,00,00,000</span></div>
+                            </div>
+                        </div>
+                        <div class="bid-controls">
+                            <button class="btn bid-btn" data-increment="200000">+2 Lakh</button>
+                            <button class="btn bid-btn" data-increment="500000">+5 Lakh</button>
+                            <button class="btn bid-btn" data-increment="1000000">+10 Lakh</button>
+                            <button class="btn bid-btn" data-increment="2000000">+20 Lakh</button>
+                            <button class="btn bid-btn" data-increment="5000000">+50 Lakh</button>
+                        </div>
+                        <div class="bid-history">
+                            <h4>Bid History</h4>
+                            <div id="bid-history-container">
+                                <div class="empty-message">No bids yet</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="next-up card">
+                        <h3>Next Players</h3>
+                        <div id="next-players-list">
+                            <!-- Dynamically populated by script.js -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="sidebar">
+                    <div class="card">
+                        <h3>All Teams</h3>
+                        <div class="team-list" id="team-list">
+                            <div class="empty-message">No teams have joined yet</div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>Auction Chat</h3>
+                        <div class="chat-area" id="chat-box">
+                            <div class="chat-message">
+                                <span>Admin:</span> Welcome to the auction!
+                            </div>
+                        </div>
+                        <div class="chat-controls">
+                            <input type="text" id="chat-input" placeholder="Type your message...">
+                            <button class="btn" id="send-message-btn">Send</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3>Your Team Players</h3>
+                <div id="team-players-list">
+                    <!-- Dynamically populated by script.js -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Admin Panel (only for auction creator) -->
+        <div id="admin-view" style="display: none;">
+            <div class="card admin-panel">
+                <h2>Admin Panel</h2>
+                
+                <div class="form-group">
+                    <label for="player-index">Player Index</label>
+                    <input type="number" id="player-index" placeholder="Enter player index">
+                </div>
+                
+                <div style="margin-top: 1rem; display: flex; gap: 1rem;">
+                    <button class="btn btn-success" id="start-auction-btn">Start Auction</button>
+                    <button class="btn btn-danger" id="pause-auction-btn">Pause Auction</button>
+                    <button class="btn" id="next-player-btn">Next Player</button>
+                    <button class="btn" id="sold-player-btn">Mark as Sold</button>
+                    <button class="btn" id="unsold-player-btn">Mark as Unsold</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="script.js" defer></script>
+</body>
+</html>

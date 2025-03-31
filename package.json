@@ -1,0 +1,21 @@
+{
+    "name": "multiplayer-fantasy-auction",
+    "version": "1.0.0",
+    "description": "A real-time multiplayer fantasy auction system",
+    "main": "server.js",
+    "scripts": {
+        "start": "node server.js",
+        "dev": "nodemon server.js"
+    },
+    "dependencies": {
+        "bcrypt": "^5.1.1",
+        "express": "^4.21.2",
+        "socket.io": "^4.8.1"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.22"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC"
+}

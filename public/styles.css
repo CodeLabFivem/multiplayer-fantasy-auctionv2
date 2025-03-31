@@ -1,0 +1,729 @@
+/* Modern Dark Theme - Advanced CSS */
+:root {
+    --primary: #6C5CE7;
+    --primary-dark: #5849BE;
+    --secondary: #00CEC9;
+    --danger: #FF7675;
+    --success: #55EFC4;
+    --warning: #FDCB6E;
+    --dark: #1E272E;
+    --dark-lighter: #2D3436;
+    --dark-light: #485460;
+    --text-primary: #DCDDE1;
+    --text-secondary: #A4B0BE;
+    --border-radius: 8px;
+    --shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  }
+  
+  /* Base Reset */
+  *, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Inter', 'Roboto', sans-serif;
+    line-height: 1.6;
+    color: var(--text-primary);
+    background-color: var(--dark);
+    min-height: 100vh;
+  }
+  
+  .container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+  
+  /* Typography */
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+  }
+  
+  /* Header */
+  header {
+    background-color: var(--dark-lighter);
+    padding: 1.2rem 0;
+    margin-bottom: 2.5rem;
+    box-shadow: var(--shadow);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  
+  header h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 0;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  
+  /* Card Styling with Glassmorphism effect */
+  .card {
+    background-color: var(--dark-lighter);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: 1.8rem;
+    margin-bottom: 1.8rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: var(--transition);
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Login & Registration */
+  .login-container {
+    max-width: 450px;
+    margin: 3rem auto;
+  }
+  
+  .login-container h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--primary);
+    font-size: 2rem;
+  }
+  
+  .form-group {
+    margin-bottom: 1.5rem;
+    position: relative;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 0.7rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+  }
+  
+  .form-group input {
+    width: 100%;
+    padding: 1rem;
+    border: 1px solid var(--dark-light);
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    background-color: var(--dark);
+    color: var(--text-primary);
+    transition: var(--transition);
+  }
+  
+  .form-group input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
+  }
+  
+  .form-group small {
+    display: block;
+    color: var(--text-secondary);
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+  }
+  
+  .admin-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .admin-checkbox input {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--dark-light);
+    border-radius: 4px;
+    background-color: var(--dark);
+    cursor: pointer;
+    position: relative;
+  }
+  
+  .admin-checkbox input:checked {
+    background-color: var(--primary);
+    border-color: var(--primary);
+  }
+  
+  .admin-checkbox input:checked::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 0.9rem;
+  }
+  
+  /* Buttons */
+  .btn {
+    display: inline-block;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    padding: 0.9rem 1.8rem;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: var(--transition);
+    text-align: center;
+    box-shadow: 0 3px 10px rgba(108, 92, 231, 0.2);
+  }
+  
+  .btn:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3);
+  }
+  
+  .btn-success {
+    background-color: var(--success);
+    box-shadow: 0 3px 10px rgba(85, 239, 196, 0.2);
+  }
+  
+  .btn-success:hover {
+    background-color: #2DDAB4;
+    box-shadow: 0 5px 15px rgba(85, 239, 196, 0.3);
+  }
+  
+  .btn-danger {
+    background-color: var(--danger);
+    box-shadow: 0 3px 10px rgba(255, 118, 117, 0.2);
+  }
+  
+  .btn-danger:hover {
+    background-color: #FF5E5D;
+    box-shadow: 0 5px 15px rgba(255, 118, 117, 0.3);
+  }
+  
+  /* Auction Status Bar */
+  .auction-status {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, var(--dark-lighter), var(--dark-light));
+    color: var(--text-primary);
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  
+  /* Auction Area Layout */
+  .auction-area {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  @media (max-width: 768px) {
+    .auction-area {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  /* Current Player Display */
+  .player-card {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .player-image {
+    width: 120px;
+    height: 120px;
+    margin-right: 2rem;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid var(--primary);
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  .player-image::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+  }
+  
+  .player-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: var(--transition);
+  }
+  
+  .player-image:hover img {
+    transform: scale(1.05);
+  }
+  
+  .player-info h3 {
+    margin-bottom: 0.8rem;
+    font-size: 1.8rem;
+    color: var(--primary);
+  }
+  
+  .player-type {
+    display: inline-block;
+    background-color: var(--warning);
+    color: var(--dark);
+    padding: 0.4rem 0.8rem;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .base-price {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  
+  /* Auction Timer */
+  .auction-timer {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 1.5rem 0;
+    padding: 1rem;
+    background-color: var(--dark);
+    border-radius: var(--border-radius);
+    color: var(--text-primary);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .auction-timer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    animation: timer 30s linear forwards;
+    z-index: 1;
+  }
+  
+  @keyframes timer {
+    0% { width: 100%; }
+    100% { width: 0%; }
+  }
+  
+  /* Current Bid */
+  .current-bid {
+    background-color: var(--dark);
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    margin-bottom: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  
+  .current-bid h4 {
+    margin-bottom: 0.8rem;
+    color: var(--primary);
+    font-size: 1.2rem;
+  }
+  
+  /* Bid Controls */
+  .bid-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .bid-btn {
+    flex: 1;
+    min-width: fit-content;
+    text-align: center;
+  }
+  
+  /* Bid History */
+  .bid-history {
+    max-height: 250px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary) var(--dark);
+  }
+  
+  .bid-history::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .bid-history::-webkit-scrollbar-track {
+    background: var(--dark);
+    border-radius: 10px;
+  }
+  
+  .bid-history::-webkit-scrollbar-thumb {
+    background-color: var(--primary);
+    border-radius: 10px;
+  }
+  
+  .bid-history h4 {
+    margin-bottom: 0.8rem;
+    color: var(--primary);
+    font-size: 1.2rem;
+    position: sticky;
+    top: 0;
+    background-color: var(--dark);
+    padding: 0.5rem 0;
+    z-index: 1;
+  }
+  
+  .bid-history-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.8rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    transition: var(--transition);
+  }
+  
+  .bid-history-item:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+  
+  .bid-team {
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  
+  /* Next Players List */
+  .next-player-item {
+    padding: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    transition: var(--transition);
+  }
+  
+  .next-player-item:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+  
+  .next-player-item:last-child {
+    border-bottom: none;
+  }
+  
+  /* Team List */
+  .team-list {
+    max-height: 250px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary) var(--dark);
+  }
+  
+  .team-list::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .team-list::-webkit-scrollbar-track {
+    background: var(--dark);
+    border-radius: 10px;
+  }
+  
+  .team-list::-webkit-scrollbar-thumb {
+    background-color: var(--primary);
+    border-radius: 10px;
+  }
+  
+  .team-item {
+    padding: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    transition: var(--transition);
+  }
+  
+  .team-item:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+  
+  .team-item:last-child {
+    border-bottom: none;
+  }
+  
+  .team-name {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+  }
+  
+  .team-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+  }
+  
+  .current-user {
+    background-color: rgba(108, 92, 231, 0.1);
+    border-left: 3px solid var(--primary);
+  }
+  
+  /* Chat */
+  .chat-area {
+    height: 250px;
+    overflow-y: auto;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: var(--border-radius);
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background-color: var(--dark);
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary) var(--dark);
+  }
+  
+  .chat-area::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .chat-area::-webkit-scrollbar-track {
+    background: var(--dark);
+    border-radius: 10px;
+  }
+  
+  .chat-area::-webkit-scrollbar-thumb {
+    background-color: var(--primary);
+    border-radius: 10px;
+  }
+  
+  .chat-message {
+    margin-bottom: 0.8rem;
+    word-break: break-word;
+    position: relative;
+    padding-left: 1rem;
+  }
+  
+  .chat-message::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.5rem;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background-color: var(--text-secondary);
+  }
+  
+  .chat-message span {
+    font-weight: 600;
+    margin-right: 0.8rem;
+  }
+  
+  .own-message {
+    color: var(--primary);
+  }
+  
+  .own-message::before {
+    background-color: var(--primary);
+  }
+  
+  .system-message {
+    color: var(--danger);
+    font-style: italic;
+  }
+  
+  .system-message::before {
+    background-color: var(--danger);
+  }
+  
+  .chat-controls {
+    display: flex;
+    gap: 0.8rem;
+  }
+  
+  .chat-controls input {
+    flex: 1;
+    padding: 1rem;
+    border: 1px solid var(--dark-light);
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    background-color: var(--dark);
+    color: var(--text-primary);
+    transition: var(--transition);
+  }
+  
+  .chat-controls input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
+  }
+  
+  /* Team Players */
+  .team-player-item {
+    padding: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: center;
+    transition: var(--transition);
+  }
+  
+  .team-player-item:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+  
+  .team-player-item:last-child {
+    border-bottom: none;
+  }
+  
+  .purchase-price {
+    color: var(--success);
+    font-weight: 600;
+  }
+  
+  /* Admin Panel */
+  .admin-panel {
+    background: linear-gradient(135deg, rgba(255, 118, 117, 0.05), rgba(255, 118, 117, 0.01));
+    border-left: 3px solid var(--danger);
+  }
+  
+  /* Empty Messages */
+  .empty-message {
+    color: var(--text-secondary);
+    text-align: center;
+    padding: 1.5rem;
+    font-style: italic;
+    font-size: 0.95rem;
+  }
+  
+  /* Glass effect for special cards */
+  .glass-card {
+    background: rgba(45, 52, 54, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  /* Modern Loading Animation */
+  .loading {
+    display: inline-block;
+    position: relative;
+    width: 40px;
+    height: 40px;
+  }
+  
+  .loading div {
+    position: absolute;
+    border: 3px solid var(--primary);
+    opacity: 1;
+    border-radius: 50%;
+    animation: loading 1.5s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+  }
+  
+  .loading div:nth-child(2) {
+    animation-delay: -0.5s;
+  }
+  
+  @keyframes loading {
+    0% {
+      top: 18px;
+      left: 18px;
+      width: 0;
+      height: 0;
+      opacity: 1;
+    }
+    100% {
+      top: 0px;
+      left: 0px;
+      width: 36px;
+      height: 36px;
+      opacity: 0;
+    }
+  }
+  
+  /* Toast Notifications */
+  .toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: var(--dark-lighter);
+    color: var(--text-primary);
+    padding: 1rem 1.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    z-index: 9999;
+    transition: transform 0.3s ease-in-out;
+    border-left: 4px solid var(--primary);
+    max-width: 350px;
+  }
+  
+  .toast-success {
+    border-left-color: var(--success);
+  }
+  
+  .toast-error {
+    border-left-color: var(--danger);
+  }
+  
+  .toast-enter {
+    transform: translateX(100%);
+  }
+  
+  .toast-active {
+    transform: translateX(0);
+  }
+  
+  .toast-exit {
+    transform: translateX(100%);
+  }
+  
+  /* Tooltip */
+  [data-tooltip] {
+    position: relative;
+    cursor: help;
+  }
+  
+  [data-tooltip]::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0.5rem 1rem;
+    background-color: var(--dark-lighter);
+    color: var(--text-primary);
+    border-radius: var(--border-radius);
+    font-size: 0.85rem;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
+    z-index: 10;
+    box-shadow: var(--shadow);
+  }
+  
+  [data-tooltip]:hover::after {
+    opacity: 1;
+    visibility: visible;
+    bottom: calc(100% + 10px);
+  }
+  
+  /* Focus styles for accessibility */
+  :focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
