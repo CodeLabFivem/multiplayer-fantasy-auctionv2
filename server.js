@@ -253,7 +253,7 @@ let players = [
     { name: "Jaydev Unadkat", category: "bowler", basePrice: 30000000, status: "waiting" , image: "https://upload.wikimedia.org/wikipedia/commons/5/5e/Heinrich_Klaasen_2023.jpg" },
     { name: "Aniket Verma", category: "batter", basePrice: 30000000, status: "waiting" , image: "https://upload.wikimedia.org/wikipedia/commons/5/5e/Heinrich_Klaasen_2023.jpg" },
     { name: "Eshan Malinga", category: "bowler", basePrice: 30000000, status: "waiting" , image: "https://upload.wikimedia.org/wikipedia/commons/5/5e/Heinrich_Klaasen_2023.jpg" },
-    { name: "Sachin Baby", category: "batter", basePrice: 30000000, status: "waiting" }
+    { name: "Sachin Baby", category: "batter", basePrice: 30000000, status: "waiting", image: "https://upload.wikimedia.org/wikipedia/commons/5/5e/Heinrich_Klaasen_2023.jpg"}
 ];
 
 // Admin access code (in a real app, store this securely)
