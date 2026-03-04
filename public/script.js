@@ -1,18 +1,65 @@
+const socket = io();
+
+const AntiSpam = {
+    actions: {},
+    canPerform(action, cooldown = 1000) {
+        const now = Date.now();
+        const lastAction = this.actions[action] || 0;
+        if (now - lastAction < cooldown) return false;
+        this.actions[action] = now;
+        return true;
+    }
+};
+
+const Toast = {
+    show(message, type = 'info', duration = 3000) {
+        const container = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+        toast.textContent = message;
+        container.appendChild(toast);
+        setTimeout(() => toast.classList.add('toast-active'), 10);
+        setTimeout(() => {
+            toast.classList.remove('toast-active');
+            setTimeout(() => toast.remove(), 300);
+        }, duration);
+    }
+};
+
+const CacheManager = {
+    save(key, data) {
+        try {
+            localStorage.setItem(key, JSON.stringify(data));
+        } catch (e) {}
+    },
+    load(key) {
+        try {
+            const data = localStorage.getItem(key);
+            return data ? JSON.parse(data) : null;
+        } catch (e) {
+            return null;
+        }
+    },
+    clear() {
+        localStorage.clear();
+    }
+};
+
 document.addEventListener('DOMContentLoaded', () => {
-    // DOM Elements
-    // Login & Registration
     const loginView = document.getElementById('login-view');
     const registerView = document.getElementById('register-view');
+    const auctionView = document.getElementById('auction-view');
+    const adminView = document.getElementById('admin-view');
+    
     const showRegisterBtn = document.getElementById('show-register');
     const showLoginBtn = document.getElementById('show-login');
     const registerBtn = document.getElementById('register-btn');
     const loginBtn = document.getElementById('login-btn');
+    const logoutBtn = document.getElementById('logout-btn');
+    const clearCacheBtn = document.getElementById('clear-cache-btn');
+    
     const adminCheckbox = document.getElementById('admin-checkbox');
     const adminCodeGroup = document.getElementById('admin-code-group');
-    
-    // Main Auction View
-    const auctionView = document.getElementById('auction-view');
-    const adminView = document.getElementById('admin-view');
     const auctionStateEl = document.getElementById('auction-state');
     const userTeamEl = document.getElementById('user-team');
     const userPurseEl = document.getElementById('user-purse');
@@ -28,7 +75,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const sendMessageBtn = document.getElementById('send-message-btn');
     const teamPlayersList = document.getElementById('team-players-list');
     
-    // Admin Controls
     const startAuctionBtn = document.getElementById('start-auction-btn');
     const pauseAuctionBtn = document.getElementById('pause-auction-btn');
     const nextPlayerBtn = document.getElementById('next-player-btn');
@@ -36,21 +82,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const unsoldPlayerBtn = document.getElementById('unsold-player-btn');
     const playerIndexInput = document.getElementById('player-index');
     
-    // Bid Controls
     const bidButtons = document.querySelectorAll('.bid-btn');
     
-    // Socket connection
-    const socket = io();
+    let currentUser = CacheManager.load('currentUser');
     
-    // Application state
-    let currentUser = {
-        username: '',
-        isAdmin: false,
-        purse: 0,
-        players: []
-    };
+    if (currentUser) {
+        document.getElementById('username').value = currentUser.username;
+    }
     
-    // Show/hide views
     showRegisterBtn.addEventListener('click', (e) => {
         e.preventDefault();
         loginView.style.display = 'none';
@@ -63,71 +102,71 @@ document.addEventListener('DOMContentLoaded', () => {
         loginView.style.display = 'block';
     });
     
-    // Toggle admin code input
     adminCheckbox.addEventListener('change', () => {
         adminCodeGroup.style.display = adminCheckbox.checked ? 'block' : 'none';
     });
     
-    // Registration
     registerBtn.addEventListener('click', () => {
-        const username = document.getElementById('new-username').value;
+        if (!AntiSpam.canPerform('register', 2000)) {
+            Toast.show('Please wait before registering', 'error');
+            return;
+        }
+        
+        const username = document.getElementById('new-username').value.trim();
         const password = document.getElementById('new-password').value;
         const confirmPassword = document.getElementById('confirm-password').value;
-        const startingPurse = document.getElementById('starting-purse').value;
+        const startingPurse = parseInt(document.getElementById('starting-purse').value) || 1000000000;
         const isAdmin = adminCheckbox.checked;
         const adminCode = document.getElementById('admin-code').value;
         
-        // Validate inputs
         if (!username || !password) {
-            alert('Please enter username and password');
+            Toast.show('Please enter username and password', 'error');
+            return;
+        }
+        
+        if (password.length < 4) {
+            Toast.show('Password must be at least 4 characters', 'error');
             return;
         }
         
         if (password !== confirmPassword) {
-            alert('Passwords do not match');
+            Toast.show('Passwords do not match', 'error');
             return;
         }
         
-        // Register user
-        socket.emit('register', {
-            username,
-            password,
-            startingPurse,
-            isAdmin,
-            adminCode
-        }, (response) => {
+        socket.emit('register', { username, password, startingPurse, isAdmin, adminCode }, (response) => {
             if (response.success) {
-                alert('Registration successful! Please login.');
-                // Switch to login view
-                registerView.style.display = 'none';
-                loginView.style.display = 'block';
-                
-                // Clear registration form
+                Toast.show('Registration successful!', 'success');
                 document.getElementById('new-username').value = '';
                 document.getElementById('new-password').value = '';
                 document.getElementById('confirm-password').value = '';
                 document.getElementById('admin-code').value = '';
                 adminCheckbox.checked = false;
                 adminCodeGroup.style.display = 'none';
+                registerView.style.display = 'none';
+                loginView.style.display = 'block';
             } else {
-                alert(response.message || 'Registration failed');
+                Toast.show(response.message || 'Registration failed', 'error');
             }
         });
     });
     
-    // Login
     loginBtn.addEventListener('click', () => {
-        const username = document.getElementById('username').value;
+        if (!AntiSpam.canPerform('login', 1000)) {
+            Toast.show('Please wait before logging in', 'error');
+            return;
+        }
+        
+        const username = document.getElementById('username').value.trim();
         const password = document.getElementById('password').value;
         
         if (!username || !password) {
-            alert('Please enter username and password');
+            Toast.show('Please enter username and password', 'error');
             return;
         }
         
         socket.emit('login', { username, password }, (response) => {
             if (response.success) {
-                // Update client state
                 currentUser = {
                     username,
                     isAdmin: response.isAdmin,
@@ -135,222 +174,201 @@ document.addEventListener('DOMContentLoaded', () => {
                     players: response.players
                 };
                 
-                // Update UI
-                userTeamEl.textContent = username;
-                updatePurseDisplay(currentUser.purse);
-                updateTeamPlayers();
+                CacheManager.save('currentUser', { username });
                 
-                // Show appropriate views
+                userTeamEl.textContent = username;
+                userPurseEl.textContent = formatCurrency(response.purse);
+                updateTeamPlayers(response.players);
+                
                 loginView.style.display = 'none';
                 auctionView.style.display = 'block';
                 
-                if (currentUser.isAdmin) {
+                if (response.isAdmin) {
                     adminView.style.display = 'block';
                 }
                 
-                // Handle auction state if already running
                 if (response.auctionState) {
-                    handleAuctionStateUpdate(response.auctionState);
+                    handleAuctionState(response.auctionState);
                 }
+                
+                Toast.show(`Welcome, ${username}!`, 'success');
             } else {
-                alert(response.message || 'Login failed');
+                Toast.show(response.message || 'Login failed', 'error');
             }
         });
     });
     
-    // Admin - Start Auction
-    startAuctionBtn.addEventListener('click', () => {
+    logoutBtn.addEventListener('click', () => {
+        CacheManager.clear();
+        location.reload();
+    });
+    
+    clearCacheBtn.addEventListener('click', () => {
+        if (confirm('Clear all cache data?')) {
+            CacheManager.clear();
+            location.reload();
+        }
+    });
+    
+    startAuctionBtn?.addEventListener('click', () => {
         socket.emit('startAuction', {}, (response) => {
             if (!response.success) {
-                alert(response.message || 'Failed to start auction');
+                Toast.show(response.message || 'Failed to start auction', 'error');
             }
         });
     });
     
-    // Admin - Pause Auction
-    pauseAuctionBtn.addEventListener('click', () => {
+    pauseAuctionBtn?.addEventListener('click', () => {
         socket.emit('pauseAuction', {}, (response) => {
             if (!response.success) {
-                alert(response.message || 'Failed to pause auction');
+                Toast.show(response.message || 'Failed to pause auction', 'error');
             }
         });
     });
     
-    // Admin - Next Player
-    nextPlayerBtn.addEventListener('click', () => {
+    nextPlayerBtn?.addEventListener('click', () => {
         const playerIndex = playerIndexInput.value ? parseInt(playerIndexInput.value) : undefined;
-        
         socket.emit('nextPlayer', { playerIndex }, (response) => {
             if (!response.success) {
-                alert(response.message || 'Failed to move to next player');
+                Toast.show(response.message || 'Failed to move to next player', 'error');
             }
-            // Clear the index input
             playerIndexInput.value = '';
         });
     });
     
-    // Admin - Mark Player as Sold
-    soldPlayerBtn.addEventListener('click', () => {
+    soldPlayerBtn?.addEventListener('click', () => {
         socket.emit('markAsSold', {}, (response) => {
             if (!response.success) {
-                alert(response.message || 'Failed to mark player as sold');
+                Toast.show(response.message || 'Failed to mark as sold', 'error');
             }
         });
     });
     
-    // Admin - Mark Player as Unsold
-    unsoldPlayerBtn.addEventListener('click', () => {
+    unsoldPlayerBtn?.addEventListener('click', () => {
         socket.emit('markAsUnsold', {}, (response) => {
             if (!response.success) {
-                alert(response.message || 'Failed to mark player as unsold');
+                Toast.show(response.message || 'Failed to mark as unsold', 'error');
             }
         });
     });
     
-    // Bidding
     bidButtons.forEach(button => {
         button.addEventListener('click', () => {
+            if (!AntiSpam.canPerform('bid', 500)) {
+                Toast.show('Wait before bidding again', 'error');
+                return;
+            }
+            
             const increment = parseInt(button.getAttribute('data-increment'));
             
             socket.emit('placeBid', { increment }, (response) => {
                 if (!response.success) {
-                    alert(response.message || 'Failed to place bid');
+                    Toast.show(response.message || 'Failed to place bid', 'error');
+                } else {
+                    Toast.show('Bid placed!', 'success');
                 }
             });
         });
     });
     
-    // Chat
     sendMessageBtn.addEventListener('click', sendChatMessage);
     chatInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            sendChatMessage();
-        }
+        if (e.key === 'Enter') sendChatMessage();
     });
     
     function sendChatMessage() {
-        const message = chatInput.value.trim();
-        
-        if (message) {
-            socket.emit('chatMessage', { message });
-            chatInput.value = '';
+        if (!AntiSpam.canPerform('chat', 1000)) {
+            Toast.show('Wait before sending another message', 'error');
+            return;
         }
+        
+        const message = chatInput.value.trim();
+        if (!message) return;
+        
+        socket.emit('chatMessage', { message });
+        chatInput.value = '';
     }
     
-    // Socket event handlers
     socket.on('auctionUpdate', (data) => {
-        auctionStateEl.textContent = capitalizeFirstLetter(data.status);
-        
+        auctionStateEl.textContent = data.status.toUpperCase();
         if (data.message) {
-            addChatMessage('Admin', data.message);
+            addChatMessage('System', data.message);
         }
     });
     
     socket.on('playerUpdate', (data) => {
-        // Update current player display
         if (data.currentPlayer) {
-            updateCurrentPlayerDisplay(data.currentPlayer);
+            updateCurrentPlayer(data.currentPlayer);
         }
-        
-        // Update next players list
         if (data.nextPlayers) {
-            updateNextPlayersDisplay(data.nextPlayers);
+            updateNextPlayers(data.nextPlayers);
         }
-        
-        // Reset bid display
         highestBidderEl.textContent = 'Waiting for bids';
         highestBidEl.textContent = formatCurrency(0);
-        
-        // Clear bid history
         bidHistoryContainer.innerHTML = '<div class="empty-message">No bids yet</div>';
     });
     
     socket.on('bidUpdate', (data) => {
-        // Update highest bid and bidder
         highestBidderEl.textContent = data.bidder;
         highestBidEl.textContent = formatCurrency(data.amount);
         
-        // Add to bid history
         if (bidHistoryContainer.querySelector('.empty-message')) {
             bidHistoryContainer.innerHTML = '';
         }
         
-        const bidHistoryItem = document.createElement('div');
-        bidHistoryItem.classList.add('bid-history-item');
-        bidHistoryItem.innerHTML = `
+        const item = document.createElement('div');
+        item.className = 'bid-history-item';
+        item.innerHTML = `
             <span class="bid-team">${data.bidder}</span>
             <span class="bid-amount">${formatCurrency(data.amount)}</span>
         `;
-        
-        bidHistoryContainer.prepend(bidHistoryItem);
-        
-        // Add chat notification
-        addChatMessage('System', `${data.bidder} placed a bid of ${formatCurrency(data.amount)}`);
+        bidHistoryContainer.prepend(item);
     });
     
     socket.on('timerUpdate', (data) => {
         const minutes = Math.floor(data.timer / 60);
         const seconds = data.timer % 60;
-        
         timerEl.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-        
-        // Make timer red when less than 10 seconds
-        if (data.timer <= 10) {
-            timerEl.style.color = 'red';
-        } else {
-            timerEl.style.color = '';
-        }
+        timerEl.style.color = data.timer <= 10 ? 'red' : '';
     });
     
     socket.on('teamUpdate', (data) => {
-        // Update user's purse and players
         if (data.purse !== undefined) {
             currentUser.purse = data.purse;
-            updatePurseDisplay(data.purse);
+            userPurseEl.textContent = formatCurrency(data.purse);
         }
-        
         if (data.players) {
             currentUser.players = data.players;
-            updateTeamPlayers();
+            updateTeamPlayers(data.players);
         }
     });
     
     socket.on('teamListUpdate', (data) => {
-        // Update team list
         if (data.teams && data.teams.length > 0) {
             teamList.innerHTML = '';
-            
             data.teams.forEach(team => {
-                const teamItem = document.createElement('div');
-                teamItem.classList.add('team-item');
-                
-                const isCurrentUser = team.name === currentUser.username;
-                if (isCurrentUser) {
-                    teamItem.classList.add('current-user');
+                const item = document.createElement('div');
+                item.className = 'team-item';
+                if (team.name === currentUser?.username) {
+                    item.classList.add('current-user');
                 }
-                
-                teamItem.innerHTML = `
+                item.innerHTML = `
                     <div class="team-name">${team.name} ${team.isAdmin ? '(Admin)' : ''}</div>
                     <div class="team-info">
                         <div>Purse: ${formatCurrency(team.purse)}</div>
                         <div>Players: ${team.playerCount}</div>
                     </div>
                 `;
-                
-                teamList.appendChild(teamItem);
+                teamList.appendChild(item);
             });
-        } else {
-            teamList.innerHTML = '<div class="empty-message">No teams have joined yet</div>';
         }
     });
     
     socket.on('playerSold', (data) => {
-        // Display sold notification
         addChatMessage('System', `${data.player.name} sold to ${data.team} for ${formatCurrency(data.amount)}`);
     });
     
     socket.on('playerUnsold', (data) => {
-        // Display unsold notification
         addChatMessage('System', `${data.player.name} remains unsold`);
     });
     
@@ -358,89 +376,14 @@ document.addEventListener('DOMContentLoaded', () => {
         addChatMessage(data.team, data.message);
     });
     
-    // Helper functions
-    function updateCurrentPlayerDisplay(player) {
-        currentPlayerDisplay.innerHTML = `
-            <div class="player-card">
-                <div class="player-image">
-                    <img src="${player.image || 'https://via.placeholder.com/100'}" alt="${player.name}">
-                </div>
-                <div class="player-info">
-                    <h3>${player.name}</h3>
-                    <div class="player-type">${player.type}</div>
-                    <div class="base-price">Base Price: ${formatCurrency(player.basePrice)}</div>
-                </div>
-            </div>
-        `;
-    }
-    
-    function updateNextPlayersDisplay(players) {
-        if (players && players.length > 0) {
-            nextPlayersList.innerHTML = '';
-            
-            players.forEach(player => {
-                const playerItem = document.createElement('div');
-                playerItem.classList.add('next-player-item');
-                
-                playerItem.innerHTML = `
-                    <div class="player-name">${player.name}</div>
-                    <div class="player-type">${player.type}</div>
-                    <div class="base-price">${formatCurrency(player.basePrice)}</div>
-                `;
-                
-                nextPlayersList.appendChild(playerItem);
-            });
-        } else {
-            nextPlayersList.innerHTML = '<div class="empty-message">No more players in queue</div>';
-        }
-    }
-    
-    function updateTeamPlayers() {
-        if (currentUser.players && currentUser.players.length > 0) {
-            teamPlayersList.innerHTML = '';
-            
-            currentUser.players.forEach(player => {
-                const playerItem = document.createElement('div');
-                playerItem.classList.add('team-player-item');
-                
-                playerItem.innerHTML = `
-                    <div class="player-name">${player.name}</div>
-                    <div class="player-type">${player.type}</div>
-                    <div class="purchase-price">Purchased for: ${formatCurrency(player.soldFor)}</div>
-                `;
-                
-                teamPlayersList.appendChild(playerItem);
-            });
-        } else {
-            teamPlayersList.innerHTML = '<div class="empty-message">You haven\'t purchased any players yet</div>';
-        }
-    }
-    
-    function updatePurseDisplay(amount) {
-        userPurseEl.textContent = formatCurrency(amount);
-    }
-    
-    function handleAuctionStateUpdate(state) {
-        // Update auction status
-        auctionStateEl.textContent = capitalizeFirstLetter(state.status);
-        
-        // Update current player if available
-        if (state.currentPlayer) {
-            updateCurrentPlayerDisplay(state.currentPlayer);
-        }
-        
-        // Update next players if available
-        if (state.nextPlayers) {
-            updateNextPlayersDisplay(state.nextPlayers);
-        }
-        
-        // Update bid info if available
+    function handleAuctionState(state) {
+        auctionStateEl.textContent = state.status.toUpperCase();
+        if (state.currentPlayer) updateCurrentPlayer(state.currentPlayer);
+        if (state.nextPlayers) updateNextPlayers(state.nextPlayers);
         if (state.highestBid) {
             highestBidEl.textContent = formatCurrency(state.highestBid);
             highestBidderEl.textContent = state.highestBidder || 'Waiting for bids';
         }
-        
-        // Update timer if available
         if (state.timer !== undefined) {
             const minutes = Math.floor(state.timer / 60);
             const seconds = state.timer % 60;
@@ -448,38 +391,69 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
+    function updateCurrentPlayer(player) {
+        currentPlayerDisplay.innerHTML = `
+            <div class="player-card">
+                <div class="player-info">
+                    <h3>${player.name}</h3>
+                    <div class="player-type">${player.category}</div>
+                    <div class="base-price">Base: ${formatCurrency(player.basePrice)}</div>
+                </div>
+            </div>
+        `;
+    }
+    
+    function updateNextPlayers(players) {
+        if (players.length === 0) {
+            nextPlayersList.innerHTML = '<div class="empty-message">No players in queue</div>';
+            return;
+        }
+        nextPlayersList.innerHTML = '';
+        players.forEach(player => {
+            const item = document.createElement('div');
+            item.className = 'next-player-item';
+            item.innerHTML = `
+                <div class="player-name">${player.name}</div>
+                <div class="player-type">${player.category}</div>
+                <div class="base-price">${formatCurrency(player.basePrice)}</div>
+            `;
+            nextPlayersList.appendChild(item);
+        });
+    }
+    
+    function updateTeamPlayers(players) {
+        if (!players || players.length === 0) {
+            teamPlayersList.innerHTML = '<div class="empty-message">No players purchased yet</div>';
+            return;
+        }
+        teamPlayersList.innerHTML = '';
+        players.forEach(player => {
+            const item = document.createElement('div');
+            item.className = 'team-player-item';
+            item.innerHTML = `
+                <div class="player-name">${player.name}</div>
+                <div class="player-type">${player.category}</div>
+                <div class="purchase-price">Purchased: ${formatCurrency(player.soldFor)}</div>
+            `;
+            teamPlayersList.appendChild(item);
+        });
+    }
+    
     function addChatMessage(sender, message) {
-        const chatMessage = document.createElement('div');
-        chatMessage.classList.add('chat-message');
-        
-        // Highlight messages from the current user
-        if (sender === currentUser.username) {
-            chatMessage.classList.add('own-message');
-        }
-        
-        // Add system-message class for system messages
-        if (sender === 'System' || sender === 'Admin') {
-            chatMessage.classList.add('system-message');
-        }
-        
-        chatMessage.innerHTML = `<span>${sender}:</span> ${message}`;
-        chatBox.appendChild(chatMessage);
-        
-        // Scroll to bottom of chat
+        const messageEl = document.createElement('div');
+        messageEl.className = 'chat-message';
+        if (sender === currentUser?.username) messageEl.classList.add('own-message');
+        if (sender === 'System' || sender === 'Admin') messageEl.classList.add('system-message');
+        messageEl.innerHTML = `<span>${sender}:</span> ${message}`;
+        chatBox.appendChild(messageEl);
         chatBox.scrollTop = chatBox.scrollHeight;
     }
     
     function formatCurrency(amount) {
-        // Format as Indian currency (Rupees)
         return new Intl.NumberFormat('en-IN', {
             style: 'currency',
             currency: 'INR',
             maximumFractionDigits: 0
         }).format(amount);
-    }
-    
-    function capitalizeFirstLetter(string) {
-        if (!string) return '';
-        return string.charAt(0).toUpperCase() + string.slice(1);
     }
 });
