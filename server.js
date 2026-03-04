@@ -10,7 +10,7 @@ const server = http.createServer(app);
 const io = socketIO(server);
 
 // Serve static files
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'publicv3')));
 
 // Basic in-memory storage (in a real app, use a database)
 const users = {};
