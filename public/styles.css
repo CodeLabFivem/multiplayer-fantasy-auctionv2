@@ -1,4 +1,3 @@
-/* Modern Dark Theme - Advanced CSS */
 :root {
     --primary: #6C5CE7;
     --primary-dark: #5849BE;
@@ -14,40 +13,37 @@
     --border-radius: 8px;
     --shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-  }
-  
-  /* Base Reset */
-  *, *::before, *::after {
+}
+
+*, *::before, *::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-  }
-  
-  body {
-    font-family: 'Inter', 'Roboto', sans-serif;
+}
+
+body {
+    font-family: 'Inter', 'Segoe UI', Tahoma, sans-serif;
     line-height: 1.6;
     color: var(--text-primary);
-    background-color: var(--dark);
+    background: linear-gradient(135deg, var(--dark) 0%, #0f1419 100%);
     min-height: 100vh;
-  }
-  
-  .container {
+}
+
+.container {
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 1.5rem;
-  }
-  
-  /* Typography */
-  h1, h2, h3, h4, h5, h6 {
+}
+
+h1, h2, h3, h4, h5, h6 {
     font-weight: 600;
     line-height: 1.3;
     color: var(--text-primary);
     margin-bottom: 1rem;
-  }
-  
-  /* Header */
-  header {
+}
+
+header {
     background-color: var(--dark-lighter);
     padding: 1.2rem 0;
     margin-bottom: 2.5rem;
@@ -55,9 +51,15 @@
     position: sticky;
     top: 0;
     z-index: 100;
-  }
-  
-  header h1 {
+}
+
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
     font-size: 1.8rem;
     font-weight: 700;
     margin-bottom: 0;
@@ -65,10 +67,29 @@
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-  }
-  
-  /* Card Styling with Glassmorphism effect */
-  .card {
+}
+
+.header-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btn-icon {
+    background: var(--dark-light);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: var(--transition);
+}
+
+.btn-icon:hover {
+    background: var(--primary);
+    transform: scale(1.1);
+}
+
+.card {
     background-color: var(--dark-lighter);
     border-radius: var(--border-radius);
     box-shadow: var(--shadow);
@@ -76,40 +97,38 @@
     margin-bottom: 1.8rem;
     border: 1px solid rgba(255, 255, 255, 0.08);
     transition: var(--transition);
-  }
-  
-  .card:hover {
-    transform: translateY(-5px);
+}
+
+.card:hover {
+    transform: translateY(-2px);
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
-  }
-  
-  /* Login & Registration */
-  .login-container {
+}
+
+.login-container {
     max-width: 450px;
     margin: 3rem auto;
-  }
-  
-  .login-container h2 {
+}
+
+.login-container h2 {
     text-align: center;
     margin-bottom: 2rem;
     color: var(--primary);
     font-size: 2rem;
-  }
-  
-  .form-group {
+}
+
+.form-group {
     margin-bottom: 1.5rem;
-    position: relative;
-  }
-  
-  .form-group label {
+}
+
+.form-group label {
     display: block;
     margin-bottom: 0.7rem;
     font-weight: 500;
     color: var(--text-primary);
     font-size: 0.95rem;
-  }
-  
-  .form-group input {
+}
+
+.form-group input {
     width: 100%;
     padding: 1rem;
     border: 1px solid var(--dark-light);
@@ -118,56 +137,27 @@
     background-color: var(--dark);
     color: var(--text-primary);
     transition: var(--transition);
-  }
-  
-  .form-group input:focus {
+}
+
+.form-group input:focus {
     outline: none;
     border-color: var(--primary);
     box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
-  }
-  
-  .form-group small {
-    display: block;
-    color: var(--text-secondary);
-    margin-top: 0.5rem;
-    font-size: 0.85rem;
-  }
-  
-  .admin-checkbox {
+}
+
+.admin-checkbox {
     display: flex;
     align-items: center;
     gap: 0.8rem;
-    margin-bottom: 1.5rem;
-  }
-  
-  .admin-checkbox input {
-    appearance: none;
+}
+
+.admin-checkbox input[type="checkbox"] {
     width: 20px;
     height: 20px;
-    border: 2px solid var(--dark-light);
-    border-radius: 4px;
-    background-color: var(--dark);
     cursor: pointer;
-    position: relative;
-  }
-  
-  .admin-checkbox input:checked {
-    background-color: var(--primary);
-    border-color: var(--primary);
-  }
-  
-  .admin-checkbox input:checked::after {
-    content: '✓';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: white;
-    font-size: 0.9rem;
-  }
-  
-  /* Buttons */
-  .btn {
+}
+
+.btn {
     display: inline-block;
     background-color: var(--primary);
     color: white;
@@ -180,36 +170,43 @@
     transition: var(--transition);
     text-align: center;
     box-shadow: 0 3px 10px rgba(108, 92, 231, 0.2);
-  }
-  
-  .btn:hover {
+}
+
+.btn:hover:not(:disabled) {
     background-color: var(--primary-dark);
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3);
-  }
-  
-  .btn-success {
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn-small {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+}
+
+.btn-success {
     background-color: var(--success);
     box-shadow: 0 3px 10px rgba(85, 239, 196, 0.2);
-  }
-  
-  .btn-success:hover {
+}
+
+.btn-success:hover {
     background-color: #2DDAB4;
-    box-shadow: 0 5px 15px rgba(85, 239, 196, 0.3);
-  }
-  
-  .btn-danger {
+}
+
+.btn-danger {
     background-color: var(--danger);
     box-shadow: 0 3px 10px rgba(255, 118, 117, 0.2);
-  }
-  
-  .btn-danger:hover {
+}
+
+.btn-danger:hover {
     background-color: #FF5E5D;
-    box-shadow: 0 5px 15px rgba(255, 118, 117, 0.3);
-  }
-  
-  /* Auction Status Bar */
-  .auction-status {
+}
+
+.auction-status {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -220,66 +217,39 @@
     margin-bottom: 2rem;
     box-shadow: var(--shadow);
     border: 1px solid rgba(255, 255, 255, 0.05);
-  }
-  
-  /* Auction Area Layout */
-  .auction-area {
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.auction-area {
     display: grid;
     grid-template-columns: 2fr 1fr;
     gap: 2rem;
     margin-bottom: 2rem;
-  }
-  
-  @media (max-width: 768px) {
+}
+
+@media (max-width: 768px) {
     .auction-area {
-      grid-template-columns: 1fr;
+        grid-template-columns: 1fr;
     }
-  }
-  
-  /* Current Player Display */
-  .player-card {
+}
+
+.player-card {
     display: flex;
     align-items: center;
     margin-bottom: 1.5rem;
-  }
-  
-  .player-image {
-    width: 120px;
-    height: 120px;
-    margin-right: 2rem;
-    border-radius: 50%;
-    overflow: hidden;
-    border: 3px solid var(--primary);
-    position: relative;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-  }
-  
-  .player-image::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: 50%;
-    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
-  }
-  
-  .player-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: var(--transition);
-  }
-  
-  .player-image:hover img {
-    transform: scale(1.05);
-  }
-  
-  .player-info h3 {
+    padding: 1rem;
+    background: var(--dark);
+    border-radius: var(--border-radius);
+}
+
+.player-info h3 {
     margin-bottom: 0.8rem;
     font-size: 1.8rem;
     color: var(--primary);
-  }
-  
-  .player-type {
+}
+
+.player-type {
     display: inline-block;
     background-color: var(--warning);
     color: var(--dark);
@@ -289,17 +259,15 @@
     font-weight: 600;
     margin-bottom: 0.8rem;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-  
-  .base-price {
+}
+
+.base-price {
     font-size: 1.3rem;
     font-weight: 600;
     color: var(--text-primary);
-  }
-  
-  /* Auction Timer */
-  .auction-timer {
+}
+
+.auction-timer {
     text-align: center;
     font-size: 2rem;
     font-weight: 700;
@@ -309,108 +277,77 @@
     border-radius: var(--border-radius);
     color: var(--text-primary);
     border: 1px solid rgba(255, 255, 255, 0.05);
-    position: relative;
-    overflow: hidden;
-  }
-  
-  .auction-timer::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--primary), var(--secondary));
-    animation: timer 30s linear forwards;
-    z-index: 1;
-  }
-  
-  @keyframes timer {
-    0% { width: 100%; }
-    100% { width: 0%; }
-  }
-  
-  /* Current Bid */
-  .current-bid {
+}
+
+.current-bid {
     background-color: var(--dark);
     padding: 1.5rem;
     border-radius: var(--border-radius);
     margin-bottom: 1.5rem;
     border: 1px solid rgba(255, 255, 255, 0.05);
-  }
-  
-  .current-bid h4 {
+}
+
+.current-bid h4 {
     margin-bottom: 0.8rem;
     color: var(--primary);
     font-size: 1.2rem;
-  }
-  
-  /* Bid Controls */
-  .bid-controls {
+}
+
+.bid-controls {
     display: flex;
     flex-wrap: wrap;
     gap: 0.8rem;
     margin-bottom: 1.5rem;
-  }
-  
-  .bid-btn {
+}
+
+.bid-btn {
     flex: 1;
     min-width: fit-content;
-    text-align: center;
-  }
-  
-  /* Bid History */
-  .bid-history {
+}
+
+.bid-history {
     max-height: 250px;
     overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: var(--primary) var(--dark);
-  }
-  
-  .bid-history::-webkit-scrollbar {
+}
+
+.bid-history::-webkit-scrollbar {
     width: 8px;
-  }
-  
-  .bid-history::-webkit-scrollbar-track {
+}
+
+.bid-history::-webkit-scrollbar-track {
     background: var(--dark);
     border-radius: 10px;
-  }
-  
-  .bid-history::-webkit-scrollbar-thumb {
+}
+
+.bid-history::-webkit-scrollbar-thumb {
     background-color: var(--primary);
     border-radius: 10px;
-  }
-  
-  .bid-history h4 {
+}
+
+.bid-history h4 {
     margin-bottom: 0.8rem;
     color: var(--primary);
     font-size: 1.2rem;
-    position: sticky;
-    top: 0;
-    background-color: var(--dark);
-    padding: 0.5rem 0;
-    z-index: 1;
-  }
-  
-  .bid-history-item {
+}
+
+.bid-history-item {
     display: flex;
     justify-content: space-between;
     padding: 0.8rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     transition: var(--transition);
-  }
-  
-  .bid-history-item:hover {
+}
+
+.bid-history-item:hover {
     background-color: rgba(255, 255, 255, 0.05);
-  }
-  
-  .bid-team {
+}
+
+.bid-team {
     font-weight: 600;
     color: var(--text-primary);
-  }
-  
-  /* Next Players List */
-  .next-player-item {
+}
+
+.next-player-item {
     padding: 1rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     display: flex;
@@ -418,72 +355,60 @@
     align-items: center;
     flex-wrap: wrap;
     transition: var(--transition);
-  }
-  
-  .next-player-item:hover {
+}
+
+.next-player-item:hover {
     background-color: rgba(255, 255, 255, 0.05);
-  }
-  
-  .next-player-item:last-child {
-    border-bottom: none;
-  }
-  
-  /* Team List */
-  .team-list {
+}
+
+.team-list {
     max-height: 250px;
     overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: var(--primary) var(--dark);
-  }
-  
-  .team-list::-webkit-scrollbar {
+}
+
+.team-list::-webkit-scrollbar {
     width: 8px;
-  }
-  
-  .team-list::-webkit-scrollbar-track {
+}
+
+.team-list::-webkit-scrollbar-track {
     background: var(--dark);
     border-radius: 10px;
-  }
-  
-  .team-list::-webkit-scrollbar-thumb {
+}
+
+.team-list::-webkit-scrollbar-thumb {
     background-color: var(--primary);
     border-radius: 10px;
-  }
-  
-  .team-item {
+}
+
+.team-item {
     padding: 1rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     transition: var(--transition);
-  }
-  
-  .team-item:hover {
+}
+
+.team-item:hover {
     background-color: rgba(255, 255, 255, 0.05);
-  }
-  
-  .team-item:last-child {
-    border-bottom: none;
-  }
-  
-  .team-name {
+}
+
+.team-name {
     font-weight: 600;
     margin-bottom: 0.5rem;
     color: var(--text-primary);
-  }
-  
-  .team-info {
+}
+
+.team-info {
     display: flex;
     justify-content: space-between;
     font-size: 0.9rem;
     color: var(--text-secondary);
-  }
-  
-  .current-user {
+}
+
+.current-user {
     background-color: rgba(108, 92, 231, 0.1);
     border-left: 3px solid var(--primary);
-  }
-  
-  /* Chat */
-  .chat-area {
+}
+
+.chat-area {
     height: 250px;
     overflow-y: auto;
     border: 1px solid rgba(255, 255, 255, 0.05);
@@ -491,88 +416,67 @@
     padding: 1rem;
     margin-bottom: 1rem;
     background-color: var(--dark);
-    scrollbar-width: thin;
-    scrollbar-color: var(--primary) var(--dark);
-  }
-  
-  .chat-area::-webkit-scrollbar {
+}
+
+.chat-area::-webkit-scrollbar {
     width: 8px;
-  }
-  
-  .chat-area::-webkit-scrollbar-track {
+}
+
+.chat-area::-webkit-scrollbar-track {
     background: var(--dark);
     border-radius: 10px;
-  }
-  
-  .chat-area::-webkit-scrollbar-thumb {
+}
+
+.chat-area::-webkit-scrollbar-thumb {
     background-color: var(--primary);
     border-radius: 10px;
-  }
-  
-  .chat-message {
+}
+
+.chat-message {
     margin-bottom: 0.8rem;
     word-break: break-word;
-    position: relative;
-    padding-left: 1rem;
-  }
-  
-  .chat-message::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0.5rem;
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    background-color: var(--text-secondary);
-  }
-  
-  .chat-message span {
+    padding: 0.5rem;
+    border-radius: 4px;
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.chat-message span {
     font-weight: 600;
     margin-right: 0.8rem;
-  }
-  
-  .own-message {
-    color: var(--primary);
-  }
-  
-  .own-message::before {
-    background-color: var(--primary);
-  }
-  
-  .system-message {
-    color: var(--danger);
+}
+
+.own-message {
+    background-color: rgba(108, 92, 231, 0.1);
+    border-left: 3px solid var(--primary);
+}
+
+.system-message {
+    background-color: rgba(255, 118, 117, 0.1);
+    border-left: 3px solid var(--danger);
     font-style: italic;
-  }
-  
-  .system-message::before {
-    background-color: var(--danger);
-  }
-  
-  .chat-controls {
+}
+
+.chat-controls {
     display: flex;
     gap: 0.8rem;
-  }
-  
-  .chat-controls input {
+}
+
+.chat-controls input {
     flex: 1;
-    padding: 1rem;
-    border: 1px solid var(--dark-light);
-    border-radius: var(--border-radius);
-    font-size: 1rem;
-    background-color: var(--dark);
-    color: var(--text-primary);
-    transition: var(--transition);
-  }
-  
-  .chat-controls input:focus {
-    outline: none;
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
-  }
-  
-  /* Team Players */
-  .team-player-item {
+}
+
+.team-player-item {
     padding: 1rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     display: flex;
@@ -580,150 +484,100 @@
     flex-wrap: wrap;
     align-items: center;
     transition: var(--transition);
-  }
-  
-  .team-player-item:hover {
+}
+
+.team-player-item:hover {
     background-color: rgba(255, 255, 255, 0.05);
-  }
-  
-  .team-player-item:last-child {
-    border-bottom: none;
-  }
-  
-  .purchase-price {
+}
+
+.purchase-price {
     color: var(--success);
     font-weight: 600;
-  }
-  
-  /* Admin Panel */
-  .admin-panel {
+}
+
+.admin-panel {
     background: linear-gradient(135deg, rgba(255, 118, 117, 0.05), rgba(255, 118, 117, 0.01));
     border-left: 3px solid var(--danger);
-  }
-  
-  /* Empty Messages */
-  .empty-message {
+}
+
+.empty-message {
     color: var(--text-secondary);
     text-align: center;
     padding: 1.5rem;
     font-style: italic;
     font-size: 0.95rem;
-  }
-  
-  /* Glass effect for special cards */
-  .glass-card {
-    background: rgba(45, 52, 54, 0.7);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
-  
-  /* Modern Loading Animation */
-  .loading {
-    display: inline-block;
-    position: relative;
-    width: 40px;
-    height: 40px;
-  }
-  
-  .loading div {
-    position: absolute;
-    border: 3px solid var(--primary);
-    opacity: 1;
-    border-radius: 50%;
-    animation: loading 1.5s cubic-bezier(0, 0.2, 0.8, 1) infinite;
-  }
-  
-  .loading div:nth-child(2) {
-    animation-delay: -0.5s;
-  }
-  
-  @keyframes loading {
-    0% {
-      top: 18px;
-      left: 18px;
-      width: 0;
-      height: 0;
-      opacity: 1;
-    }
-    100% {
-      top: 0px;
-      left: 0px;
-      width: 36px;
-      height: 36px;
-      opacity: 0;
-    }
-  }
-  
-  /* Toast Notifications */
-  .toast {
+}
+
+#toast-container {
     position: fixed;
     bottom: 20px;
     right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.toast {
     background-color: var(--dark-lighter);
     color: var(--text-primary);
     padding: 1rem 1.5rem;
     border-radius: var(--border-radius);
     box-shadow: var(--shadow);
-    z-index: 9999;
-    transition: transform 0.3s ease-in-out;
-    border-left: 4px solid var(--primary);
+    min-width: 250px;
     max-width: 350px;
-  }
-  
-  .toast-success {
-    border-left-color: var(--success);
-  }
-  
-  .toast-error {
-    border-left-color: var(--danger);
-  }
-  
-  .toast-enter {
-    transform: translateX(100%);
-  }
-  
-  .toast-active {
+    transform: translateX(400px);
+    transition: transform 0.3s ease;
+    border-left: 4px solid var(--primary);
+}
+
+.toast.toast-active {
     transform: translateX(0);
-  }
-  
-  .toast-exit {
-    transform: translateX(100%);
-  }
-  
-  /* Tooltip */
-  [data-tooltip] {
-    position: relative;
-    cursor: help;
-  }
-  
-  [data-tooltip]::after {
-    content: attr(data-tooltip);
-    position: absolute;
-    bottom: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 0.5rem 1rem;
-    background-color: var(--dark-lighter);
-    color: var(--text-primary);
-    border-radius: var(--border-radius);
-    font-size: 0.85rem;
-    white-space: nowrap;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.2s ease;
-    z-index: 10;
-    box-shadow: var(--shadow);
-  }
-  
-  [data-tooltip]:hover::after {
-    opacity: 1;
-    visibility: visible;
-    bottom: calc(100% + 10px);
-  }
-  
-  /* Focus styles for accessibility */
-  :focus-visible {
+}
+
+.toast-success {
+    border-left-color: var(--success);
+}
+
+.toast-error {
+    border-left-color: var(--danger);
+}
+
+.toast-info {
+    border-left-color: var(--secondary);
+}
+
+.toast-warning {
+    border-left-color: var(--warning);
+}
+
+a {
+    color: var(--primary);
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+a:hover {
+    color: var(--secondary);
+    text-decoration: underline;
+}
+
+:focus-visible {
     outline: 2px solid var(--primary);
     outline-offset: 2px;
-  }
+}
+
+@media (max-width: 768px) {
+    .auction-status {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .bid-controls {
+        flex-direction: column;
+    }
+    
+    .bid-btn {
+        width: 100%;
+    }
+}
